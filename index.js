@@ -21,15 +21,14 @@ app.get('/api/courses', (req, res) => {
 app.get('/api/courses/:id', (req, res) => {
   const course = courses.find(course => course.id === parseInt(req.params.id));
 
-  if (!course) res.status(404).send('course yang anda minta tidak tersedia');
+  if (!course)
+    return res.status(404).send('course yang anda minta tidak tersedia');
   res.send(course);
 });
 
 app.post('/api/courses', (req, res) => {
   const { error } = validateCourse(req.body);
-  if (error) {
-    res.status(400).send(error.details[0].message);
-  }
+  if (error) return res.status(400).send(error.details[0].message);
 
   const course = {
     id: courses.length + 1,
@@ -48,16 +47,30 @@ app.post('/api/courses', (req, res) => {
 // kembali ke course yg sudah update
 app.put('/api/course/:id', (req, res) => {
   const course = courses.find(course => course.id === parseInt(req.params.id));
-  if (!course) res.status(404).send('Course yang diminta tidak tersedia');
+  if (!course)
+    return res.status(404).send('Course yang diminta tidak tersedia');
 
   const { error } = validateCourse(req.body);
 
-  if (error) {
-    res.status(400).send(error.details[0].message);
-    return;
-  }
+  if (error) return res.status(400).send(error.details[0].message);
 
   course.name = req.body.name;
+
+  res.send(courses);
+});
+
+// --- DELETE --- //
+// cari course yang mau dihapus
+// jika tidak ada, return 404
+// delete
+// tampilkan course
+app.delete('/api/courses/:id', (req, res) => {
+  const course = courses.find(course => course.id === parseInt(req.params.id));
+  if (!course)
+    return res.status(404).send('Course yang diminta tidak tersedia');
+
+  const index = courses.indexOf(course);
+  courses.splice(index, 1);
 
   res.send(courses);
 });
