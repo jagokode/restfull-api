@@ -1,0 +1,12 @@
+{
+  "name": "restapi",
+  "version": "1.0.0",
+  "description": "Building RESTFULL APIs using Express",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "Jagokode",
+  "license": "ISC"
+}
